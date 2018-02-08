@@ -1,8 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 
+BASE_URL = 'https://slack.com/apps/'
+CATEGORY_URL = BASE_URL + 'category/'
+
 def get_categories():
-    response = requests.get('https://slack.com/apps')
+    response = requests.get(BASE_URL)
     soup = BeautifulSoup(response.text, 'html.parser')
     categories = []
     elements = soup.find_all('a', class_='sidebar_menu_list_item')
@@ -11,12 +14,12 @@ def get_categories():
             'name': element.get_text(),
             'slack_id': element.get('href').split('/')[3].split('-')[0],
             'slug': element.get('href').split('/')[3],
-            'url': 'https://slack.com' + element.get('href'),
+            'url': CATEGORY_URL + element.get('href').split('/')[3],
         })
     return categories
 
 def get_category(slug):
-    url = 'https://slack.com/apps/category/' + slug
+    url = CATEGORY_URL + slug
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     def parse_description(soup):
@@ -33,7 +36,7 @@ def get_category(slug):
     }
 
 def get_applications(slug, page):
-    url = 'https://slack.com/apps/category/' + slug + '?page=' + str(page)
+    url = CATEGORY_URL + slug + '?page=' + str(page)
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     applications = []
@@ -47,12 +50,12 @@ def get_applications(slug, page):
             'short_description': element.find('span', class_='media_list_subtitle').get_text(),
             'slack_id': element.get('data-app-id'),
             'slug': element.a.get('href').split('/')[2],
-            'url': 'https://slack.com' + element.a.get('href'),
+            'url': BASE_URL + element.a.get('href').split('/')[2],
         })
     return applications
 
 def get_application(slug):
-    url = 'https://slack.com/apps/' + slug
+    url = BASE_URL + slug
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     def parse_categories(soup):
@@ -63,7 +66,7 @@ def get_application(slug):
                 'name': element.get_text().strip(),
                 'slack_id': element.get('href').split('/')[3].split('-')[0],
                 'slug': element.get('href').split('/')[3],
-                'url': 'https://slack.com' + element.get('href'),
+                'url': CATEGORY_URL + element.get('href').split('/')[3],
             })
         return categories
     def parse_screenshots(soup):
