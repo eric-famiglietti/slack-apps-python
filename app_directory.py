@@ -61,11 +61,8 @@ def get_application(slug):
         elements = soup.find_all('a', class_='tag')
         return list(map(parse_category_link, elements))
     def parse_screenshots(soup):
-        screenshots = []
         elements = soup.find_all('div', class_='p-screenshots')
-        for element in elements:
-            screenshots.append(element.img.get('src'))
-        return screenshots
+        return list(map(lambda e: e.img.get('src'), elements))
     return {
         'avatar': soup.find('img', class_='large_app_icon').get('src'),
         'categories': parse_categories(soup),
