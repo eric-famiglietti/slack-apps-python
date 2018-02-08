@@ -32,7 +32,7 @@ def get_category(slug):
         'description': parse_description(soup),
         'name': soup.find('h1', class_='page_title_text').get_text(),
         'slack_id': slug.split('-')[0],
-        'slug': url.split('/')[5],
+        'slug': slug,
         'url': url,
     }
 
@@ -77,5 +77,6 @@ def get_application(slug):
         'privacy_policy_url': soup.find(id='action_app_privacy').get('href'),
         'screenshots': parse_screenshots(soup),
         'short_description': soup.find('meta', attrs={'name': 'description'}).get('content'),
+        'slug': slug,
         'url': url,
     }
