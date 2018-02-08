@@ -4,19 +4,20 @@ from bs4 import BeautifulSoup
 BASE_URL = 'https://slack.com/apps/'
 CATEGORY_URL = BASE_URL + 'category/'
 
+def parse_category_link(soup):
+    slug = soup.get('href').split('/')[3]
+    return {
+        'name': soup.get_text().strip(),
+        'slack_id': slug.split('-')[0],
+        'slug': slug,
+        'url': CATEGORY_URL + slug,
+    }
+
 def get_categories():
     response = requests.get(BASE_URL)
     soup = BeautifulSoup(response.text, 'html.parser')
-    categories = []
     elements = soup.find_all('a', class_='sidebar_menu_list_item')
-    for element in elements:
-        categories.append({
-            'name': element.get_text(),
-            'slack_id': element.get('href').split('/')[3].split('-')[0],
-            'slug': element.get('href').split('/')[3],
-            'url': CATEGORY_URL + element.get('href').split('/')[3],
-        })
-    return categories
+    return list(map(parse_category_link, elements))
 
 def get_category(slug):
     url = CATEGORY_URL + slug
@@ -59,16 +60,8 @@ def get_application(slug):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     def parse_categories(soup):
-        categories = []
         elements = soup.find_all('a', class_='tag')
-        for element in elements:
-            categories.append({
-                'name': element.get_text().strip(),
-                'slack_id': element.get('href').split('/')[3].split('-')[0],
-                'slug': element.get('href').split('/')[3],
-                'url': CATEGORY_URL + element.get('href').split('/')[3],
-            })
-        return categories
+        return list(map(parse_category_link, elements))
     def parse_screenshots(soup):
         screenshots = []
         elements = soup.find_all('div', class_='p-screenshots')
