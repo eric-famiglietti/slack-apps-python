@@ -25,9 +25,7 @@ def get_category(slug):
     soup = BeautifulSoup(response.text, 'html.parser')
     def parse_description(soup):
         element = soup.find('div', class_='description_container')
-        if element:
-            return element.p.text
-        return None
+        return element.p.text if element else None
     return {
         'description': parse_description(soup),
         'name': soup.find('h1', class_='page_title_text').get_text(),
