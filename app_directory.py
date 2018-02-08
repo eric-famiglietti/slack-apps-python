@@ -4,6 +4,18 @@ from bs4 import BeautifulSoup
 BASE_URL = 'https://slack.com/apps/'
 CATEGORY_URL = BASE_URL + 'category/'
 
+def parse_application_link(soup):
+    return {
+        'avatar': soup.a.img.get('src'),
+        'is_slack_owned': soup.get('data-app-is-slack-owned'),
+        'name': soup.find('span', class_='media_list_title').get_text(),
+        'position': soup.get('data-position'),
+        'short_description': soup.find('span', class_='media_list_subtitle').get_text(),
+        'slack_id': soup.get('data-app-id'),
+        'slug': soup.a.get('href').split('/')[2],
+        'url': BASE_URL + soup.a.get('href').split('/')[2],
+    }
+
 def parse_category_link(soup):
     slug = soup.get('href').split('/')[3]
     return {
@@ -35,23 +47,10 @@ def get_category(slug):
     }
 
 def get_applications(slug, page):
-    url = CATEGORY_URL + slug + '?page=' + str(page)
-    response = requests.get(url)
+    response = requests.get(CATEGORY_URL + slug + '?page=' + str(page))
     soup = BeautifulSoup(response.text, 'html.parser')
-    applications = []
     elements = soup.find_all('li', class_='app_row interactive')
-    for element in elements:
-        applications.append({
-            'avatar': element.a.img.get('src'),
-            'is_slack_owned': element.get('data-app-is-slack-owned'),
-            'name': element.find('span', class_='media_list_title').get_text(),
-            'position': element.get('data-position'),
-            'short_description': element.find('span', class_='media_list_subtitle').get_text(),
-            'slack_id': element.get('data-app-id'),
-            'slug': element.a.get('href').split('/')[2],
-            'url': BASE_URL + element.a.get('href').split('/')[2],
-        })
-    return applications
+    return list(map(parse_application_link, elements))
 
 def get_application(slug):
     url = BASE_URL + slug
