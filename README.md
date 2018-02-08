@@ -93,9 +93,9 @@ Returns a dictionary containing information for a single application.
         ...
     ],
     'description': '@must-read transforms any important message into micro-task...',
-    'help_url': 'https://finalem.com/must-read/help?utm_source=slack.com&utm_medium=special&utm_campaign=apps',
+    'help_url': 'https://finalem.com/must-read/help',
     'name': '@must-read',
-    'privacy_policy_url': 'https://finalem.com/must-read/privacy-policy?utm_source=slack.com&utm_medium=special&utm_campaign=apps',
+    'privacy_policy_url': 'https://finalem.com/must-read/privacy-policy',
     'screenshots': [
         'https://s3-us-west-2.amazonaws.com/slack-files2/images/2017-07-20/216663485463_0196a3e4ff408839be40_1600.png',
         ...
