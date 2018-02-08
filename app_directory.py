@@ -11,7 +11,7 @@ def get_categories():
             'name': element.get_text(),
             'slack_id': element.get('href').split('/')[3].split('-')[0],
             'slug': element.get('href').split('/')[3],
-            'url': element.get('href'),
+            'url': 'https://slack.com' + element.get('href'),
         })
     return categories
 
