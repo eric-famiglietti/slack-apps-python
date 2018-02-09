@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 import requests
 import responses
 import unittest
@@ -21,13 +22,6 @@ class GetCategoriesTest(unittest.TestCase):
         self.assertEqual(categories[0]['slug'], 'At0EFWTR6D-featured')
         self.assertEqual(categories[0]['url'], 'https://slack.com/apps/category/At0EFWTR6D-featured')
 
-    @responses.activate
-    def test_it_raises_an_exception_when_response_is_not_ok(self):
-        responses.add(responses.GET, app_directory.BASE_URL, status=404)
-
-        with self.assertRaises(requests.exceptions.HTTPError):
-            app_directory.get_categories()
-
 
 class GetCategoryTest(unittest.TestCase):
 
@@ -45,14 +39,6 @@ class GetCategoryTest(unittest.TestCase):
         self.assertEqual(category['slack_id'], 'At0EFWTR6D')
         self.assertEqual(category['slug'], 'At0EFWTR6D-featured')
         self.assertEqual(category['url'], 'https://slack.com/apps/category/At0EFWTR6D-featured')
-
-    @responses.activate
-    def test_it_raises_an_exception_when_response_is_not_ok(self):
-        url = app_directory.CATEGORY_URL + 'At0EFWTR6D-featured'
-        responses.add(responses.GET, url, status=404)
-
-        with self.assertRaises(requests.exceptions.HTTPError):
-            app_directory.get_category('At0EFWTR6D-featured')
 
 
 class GetApplicationsTest(unittest.TestCase):
@@ -75,14 +61,6 @@ class GetApplicationsTest(unittest.TestCase):
         self.assertEqual(applications[0]['slack_id'], 'A15KDN02Y')
         self.assertEqual(applications[0]['slug'], 'A15KDN02Y-must-read')
         self.assertEqual(applications[0]['url'], 'https://slack.com/apps/A15KDN02Y-must-read')
-
-    @responses.activate
-    def test_it_raises_an_exception_when_response_is_not_ok(self):
-        url = app_directory.CATEGORY_URL + 'At0EFWTR6D-featured'
-        responses.add(responses.GET, url, status=404)
-
-        with self.assertRaises(requests.exceptions.HTTPError):
-            app_directory.get_applications('At0EFWTR6D-featured', 1)
 
 
 class GetApplicationTest(unittest.TestCase):
@@ -107,13 +85,25 @@ class GetApplicationTest(unittest.TestCase):
         self.assertEqual(application['slug'], 'A15KDN02Y-must-read')
         self.assertEqual(application['url'], 'https://slack.com/apps/A15KDN02Y-must-read')
 
+
+class GetSoupTest(unittest.TestCase):
+
+    @responses.activate
+    def test_it_returns_an_instance_of_beautiful_soup(self):
+        with open('index.html', 'r') as f:
+            body = f.read()
+        responses.add(responses.GET, app_directory.BASE_URL, body=body)
+
+        soup = app_directory.get_soup(app_directory.BASE_URL)
+
+        self.assertIsInstance(soup, BeautifulSoup)
+
     @responses.activate
     def test_it_raises_an_exception_when_response_is_not_ok(self):
-        url = app_directory.BASE_URL + 'A15KDN02Y-must-read'
-        responses.add(responses.GET, url, status=404)
+        responses.add(responses.GET, app_directory.BASE_URL, status=404)
 
         with self.assertRaises(requests.exceptions.HTTPError):
-            app_directory.get_application('A15KDN02Y-must-read')
+            app_directory.get_soup(app_directory.BASE_URL)
 
 
 if __name__ == '__main__':
