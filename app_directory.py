@@ -7,6 +7,7 @@ CATEGORY_URL = BASE_URL + 'category/'
 
 
 def parse_application_link(soup):
+    slug = soup.a.get('href').split('/')[2]
     return {
         'avatar': soup.a.img.get('src'),
         'is_slack_owned': soup.get('data-app-is-slack-owned') == 'True',
@@ -14,8 +15,8 @@ def parse_application_link(soup):
         'position': int(soup.get('data-position')),
         'short_description': soup.find('span', class_='media_list_subtitle').get_text(),
         'slack_id': soup.get('data-app-id'),
-        'slug': soup.a.get('href').split('/')[2],
-        'url': BASE_URL + soup.a.get('href').split('/')[2],
+        'slug': slug,
+        'url': BASE_URL + slug,
     }
 
 
