@@ -31,6 +31,8 @@ def parse_category_link(soup):
 
 def get_categories():
     response = requests.get(BASE_URL)
+    if not response.ok:
+        response.raise_for_status()
     soup = BeautifulSoup(response.text, 'html.parser')
     elements = soup.find_all('a', class_='sidebar_menu_list_item')
     return list(map(parse_category_link, elements))
@@ -39,6 +41,8 @@ def get_categories():
 def get_category(slug):
     url = CATEGORY_URL + slug
     response = requests.get(url)
+    if not response.ok:
+        response.raise_for_status()
     soup = BeautifulSoup(response.text, 'html.parser')
     def parse_description(soup):
         element = soup.find('div', class_='description_container')
@@ -54,6 +58,8 @@ def get_category(slug):
 
 def get_applications(slug, page):
     response = requests.get(CATEGORY_URL + slug + '?page=' + str(page))
+    if not response.ok:
+        response.raise_for_status()
     soup = BeautifulSoup(response.text, 'html.parser')
     elements = soup.find_all('li', class_='app_row interactive')
     return list(map(parse_application_link, elements))
@@ -62,6 +68,8 @@ def get_applications(slug, page):
 def get_application(slug):
     url = BASE_URL + slug
     response = requests.get(url)
+    if not response.ok:
+        response.raise_for_status()
     soup = BeautifulSoup(response.text, 'html.parser')
     def parse_categories(soup):
         elements = soup.find('div', class_='top_margin hide_on_mobile').find_all('a', class_='tag')
