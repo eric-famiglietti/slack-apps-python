@@ -62,9 +62,9 @@ Returns a list of dictionaries representing a single page of applications in a c
 [
     {
         'avatar': 'https://slack-files2.s3-us-west-2.amazonaws.com/avatars/2016-05-03/39674680625_65ad135f72eff91b6ddf_96.jpg',
-        'is_slack_owned': 'false',
+        'is_slack_owned': False,
         'name': '@must-read',
-        'position': '1',
+        'position': 1,
         'short_description': 'Controllable must-read lists for your team in Slack 📕📗📘',
         'slack_id': 'A15KDN02Y',
         'slug': 'A15KDN02Y-must-read',
