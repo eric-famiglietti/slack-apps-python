@@ -57,7 +57,7 @@ def get_application(slug):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     def parse_categories(soup):
-        elements = soup.find_all('a', class_='tag')
+        elements = soup.find('div', class_='top_margin hide_on_mobile').find_all('a', class_='tag')
         return list(map(parse_category_link, elements))
     def parse_screenshots(soup):
         elements = soup.find_all('div', class_='p-screenshots')
