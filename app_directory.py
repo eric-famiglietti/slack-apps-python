@@ -1,8 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
 
+
 BASE_URL = 'https://slack.com/apps/'
 CATEGORY_URL = BASE_URL + 'category/'
+
 
 def parse_application_link(soup):
     return {
@@ -16,6 +18,7 @@ def parse_application_link(soup):
         'url': BASE_URL + soup.a.get('href').split('/')[2],
     }
 
+
 def parse_category_link(soup):
     slug = soup.get('href').split('/')[3]
     return {
@@ -25,11 +28,13 @@ def parse_category_link(soup):
         'url': CATEGORY_URL + slug,
     }
 
+
 def get_categories():
     response = requests.get(BASE_URL)
     soup = BeautifulSoup(response.text, 'html.parser')
     elements = soup.find_all('a', class_='sidebar_menu_list_item')
     return list(map(parse_category_link, elements))
+
 
 def get_category(slug):
     url = CATEGORY_URL + slug
@@ -46,11 +51,13 @@ def get_category(slug):
         'url': url,
     }
 
+
 def get_applications(slug, page):
     response = requests.get(CATEGORY_URL + slug + '?page=' + str(page))
     soup = BeautifulSoup(response.text, 'html.parser')
     elements = soup.find_all('li', class_='app_row interactive')
     return list(map(parse_application_link, elements))
+
 
 def get_application(slug):
     url = BASE_URL + slug
