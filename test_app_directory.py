@@ -82,6 +82,7 @@ class GetApplicationTest(unittest.TestCase):
         self.assertEqual(application['privacy_policy_url'], 'https://finalem.com/must-read/privacy-policy?utm_source=slack.com&utm_medium=special&utm_campaign=apps')
         self.assertEqual(len(application['screenshots']), 6)
         self.assertEqual(application['short_description'], 'Controllable must-read lists for your team in Slack ð\x9f\x93\x95ð\x9f\x93\x97ð\x9f\x93\x98')
+        self.assertEqual(application['slack_id'], 'A15KDN02Y')
         self.assertEqual(application['slug'], 'A15KDN02Y-must-read')
         self.assertEqual(application['url'], 'https://slack.com/apps/A15KDN02Y-must-read')
 
