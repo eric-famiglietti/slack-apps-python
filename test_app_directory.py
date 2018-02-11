@@ -100,7 +100,7 @@ class GetSoupTest(unittest.TestCase):
         self.assertIsInstance(soup, BeautifulSoup)
 
     @responses.activate
-    def test_it_raises_an_exception_when_response_is_not_ok(self):
+    def test_it_raises_an_exception_when_the_response_is_not_ok(self):
         responses.add(responses.GET, app_directory.BASE_URL, status=404)
 
         with self.assertRaises(requests.exceptions.HTTPError):
