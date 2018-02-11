@@ -48,9 +48,9 @@ def parse_application_list_item(soup):
     return {
         'avatar': soup.a.img.get('src'),
         'is_slack_owned': soup.get('data-app-is-slack-owned') == 'True',
-        'name': soup.find('span', class_='media_list_title').get_text(),
+        'name': soup.find('span', class_='media_list_title').string,
         'position': int(soup.get('data-position')),
-        'short_description': soup.find('span', class_='media_list_subtitle').get_text(),
+        'short_description': soup.find('span', class_='media_list_subtitle').string,
         'slack_id': soup.get('data-app-id'),
         'slug': slug,
         'url': BASE_URL + slug,
@@ -72,7 +72,7 @@ def parse_application(soup):
         'categories': get_categories(soup),
         'description': soup.find('div', class_='p-app_description').div.div.get_text(),
         'help_url': soup.find(id='action_app_support').get('href'),
-        'name': soup.find('h2', class_='large app_name').get_text(),
+        'name': soup.find('h2', class_='large app_name').string,
         'privacy_policy_url': soup.find(id='action_app_privacy').get('href'),
         'screenshots': get_screenshots(soup),
         'short_description': soup.find('meta', attrs={'name': 'description'}).get('content'),
@@ -82,7 +82,7 @@ def parse_application(soup):
 def parse_category_link(soup):
     slug = soup.get('href').split('/')[3]
     return {
-        'name': soup.get_text().strip(),
+        'name': soup.string.strip(),
         'slack_id': slug.split('-')[0],
         'slug': slug,
         'url': CATEGORY_URL + slug,
@@ -96,5 +96,5 @@ def parse_category(soup):
 
     return {
         'description': get_description(soup),
-        'name': soup.find('h1', class_='page_title_text').get_text(),
+        'name': soup.find('h1', class_='page_title_text').string,
     }
