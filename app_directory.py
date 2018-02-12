@@ -7,6 +7,9 @@ CATEGORY_URL = BASE_URL + 'category/'
 
 
 def get_application(slug):
+    """
+    Returns a dictionary representing an application.
+    """
     soup = get_soup(BASE_URL + slug)
     application = parse_application(soup)
     application['slack_id'] = slug.split('-')[0]
@@ -16,18 +19,28 @@ def get_application(slug):
 
 
 def get_applications(slug, page):
+    """
+    Returns a list of dictionaries representing a page of applications in a
+    category.
+    """
     soup = get_soup(CATEGORY_URL + slug + '?page=' + str(page))
     list_items = soup.find_all('li', class_='app_row interactive')
     return list(map(parse_application_list_item, list_items))
 
 
 def get_categories():
+    """
+    Returns a list of dictionaries representing all categories.
+    """
     soup = get_soup(BASE_URL)
     links = soup.find_all('a', class_='sidebar_menu_list_item')
     return list(map(parse_category_link, links))
 
 
 def get_category(slug):
+    """
+    Returns a dictionary representing a category.
+    """
     soup = get_soup(CATEGORY_URL + slug)
     category = parse_category(soup)
     category['slack_id'] = slug.split('-')[0]
@@ -37,6 +50,9 @@ def get_category(slug):
 
 
 def get_soup(url):
+    """
+    Returns an instance of Beautiful Soup containing text from the given URL.
+    """
     response = requests.get(url)
     if not response.ok:
         response.raise_for_status()
@@ -44,6 +60,10 @@ def get_soup(url):
 
 
 def parse_application_list_item(soup):
+    """
+    Parses a list item containing application data.
+    Application list items are found on category pages.
+    """
     slug = soup.a.get('href').split('/')[2]
     return {
         'avatar': soup.a.img.get('src'),
@@ -58,6 +78,9 @@ def parse_application_list_item(soup):
 
 
 def parse_application(soup):
+    """
+    Parses an application page.
+    """
     def get_categories(soup):
         container = soup.find('div', class_='top_margin hide_on_mobile')
         links = container.find_all('a', class_='tag')
@@ -80,6 +103,10 @@ def parse_application(soup):
 
 
 def parse_category_link(soup):
+    """
+    Parses a link containing category data.
+    Category links are found on the index page.
+    """
     slug = soup.get('href').split('/')[3]
     return {
         'name': soup.string.strip(),
@@ -90,6 +117,9 @@ def parse_category_link(soup):
 
 
 def parse_category(soup):
+    """
+    Parses a category page.
+    """
     def get_description(soup):
         container = soup.find('div', class_='description_container')
         return container.p.text if container else None
