@@ -105,3 +105,7 @@ Returns a dictionary containing information for a single application.
     'url': 'https://slack.com/apps/A15KDN02Y-must-read'
 }
 ```
+
+## Testing
+
+You can run the included unit tests using `python -m unittest`.
