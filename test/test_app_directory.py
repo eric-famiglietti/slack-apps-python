@@ -107,5 +107,78 @@ class GetSoupTest(unittest.TestCase):
             app_directory.get_soup(app_directory.BASE_URL)
 
 
+class ParseApplicationListItemTest(unittest.TestCase):
+
+    def test_it_returns_an_application(self):
+        with open('test/resources/At0EFWTR6D-featured.html', 'r') as f:
+            soup = BeautifulSoup(f, 'html.parser')
+        soup = soup.find('li', class_='app_row interactive')
+
+        application = app_directory.parse_application_list_item(soup)
+
+        self.assertEqual(application['avatar'], 'https://slack-files2.s3-us-west-2.amazonaws.com/avatars/2016-05-03/39674680625_65ad135f72eff91b6ddf_96.jpg')
+        self.assertFalse(application['is_slack_owned'])
+        self.assertEqual(application['name'], '@must-read')
+        self.assertEqual(application['position'], 1)
+        self.assertEqual(application['short_description'], 'Controllable must-read lists for your team in Slack 📕📗📘')
+        self.assertEqual(application['slack_id'], 'A15KDN02Y')
+        self.assertEqual(application['slug'], 'A15KDN02Y-must-read')
+        self.assertEqual(application['url'], 'https://slack.com/apps/A15KDN02Y-must-read')
+
+
+class ParseApplicationTest(unittest.TestCase):
+
+    def test_it_returns_an_application(self):
+        with open('test/resources/A15KDN02Y-must-read.html', 'r') as f:
+            soup = BeautifulSoup(f, 'html.parser')
+
+        application = app_directory.parse_application(soup)
+
+        self.assertEqual(application['avatar'], 'https://slack-files2.s3-us-west-2.amazonaws.com/avatars/2016-05-03/39674680625_65ad135f72eff91b6ddf_512.jpg')
+        self.assertEqual(len(application['categories']), 4)
+        self.assertTrue(len(application['description']) > 0)
+        self.assertEqual(application['help_url'], 'https://finalem.com/must-read/help?utm_source=slack.com&utm_medium=special&utm_campaign=apps')
+        self.assertEqual(application['name'], '@must-read')
+        self.assertEqual(application['privacy_policy_url'], 'https://finalem.com/must-read/privacy-policy?utm_source=slack.com&utm_medium=special&utm_campaign=apps')
+        self.assertEqual(len(application['screenshots']), 6)
+        self.assertEqual(application['short_description'], 'Controllable must-read lists for your team in Slack 📕📗📘')
+
+
+class ParseCategoryLinkTest(unittest.TestCase):
+
+    def test_it_returns_a_category(self):
+        with open('test/resources/index.html', 'r') as f:
+            soup = BeautifulSoup(f, 'html.parser')
+        soup = soup.find('a', class_='sidebar_menu_list_item')
+
+        category = app_directory.parse_category_link(soup)
+
+        self.assertEqual(category['name'], 'Featured')
+        self.assertEqual(category['slack_id'], 'At0EFWTR6D')
+        self.assertEqual(category['slug'], 'At0EFWTR6D-featured')
+        self.assertEqual(category['url'], 'https://slack.com/apps/category/At0EFWTR6D-featured')
+
+
+class ParseCategoryTest(unittest.TestCase):
+
+    def test_it_returns_a_category_with_a_description(self):
+        with open('test/resources/At0MQP5BEF-bots.html', 'r') as f:
+            soup = BeautifulSoup(f, 'html.parser')
+
+        category = app_directory.parse_category(soup)
+
+        self.assertEqual(category['description'], 'Bots are like having a virtual team member — they can help you manage tasks, run your team standup, poll the office, and more!')
+        self.assertEqual(category['name'], 'Bots')
+
+    def test_it_returns_a_category_without_a_description(self):
+        with open('test/resources/At0EFWTR6D-featured.html', 'r') as f:
+            soup = BeautifulSoup(f, 'html.parser')
+
+        category = app_directory.parse_category(soup)
+
+        self.assertEqual(category['description'], None)
+        self.assertEqual(category['name'], 'Featured')
+
+
 if __name__ == '__main__':
     unittest.main()
