@@ -11,7 +11,7 @@ class GetApplicationTest(unittest.TestCase):
     @responses.activate
     def test_it_returns_an_application(self):
         url = app_directory.BASE_URL + 'A15KDN02Y-must-read'
-        with open('A15KDN02Y-must-read.html', 'r') as f:
+        with open('test/resources/A15KDN02Y-must-read.html', 'r') as f:
             body = f.read()
         responses.add(responses.GET, url, body=body)
 
@@ -35,7 +35,7 @@ class GetApplicationsTest(unittest.TestCase):
     @responses.activate
     def test_it_returns_a_list_of_applications(self):
         url = app_directory.CATEGORY_URL + 'At0EFWTR6D-featured'
-        with open('At0EFWTR6D-featured.html', 'r') as f:
+        with open('test/resources/At0EFWTR6D-featured.html', 'r') as f:
             body = f.read()
         responses.add(responses.GET, url, body=body)
 
@@ -56,7 +56,7 @@ class GetCategoriesTest(unittest.TestCase):
 
     @responses.activate
     def test_it_returns_a_list_of_categories(self):
-        with open('index.html', 'r') as f:
+        with open('test/resources/index.html', 'r') as f:
             body = f.read()
         responses.add(responses.GET, app_directory.BASE_URL, body=body)
 
@@ -74,7 +74,7 @@ class GetCategoryTest(unittest.TestCase):
     @responses.activate
     def test_it_returns_a_category(self):
         url = app_directory.CATEGORY_URL + 'At0EFWTR6D-featured'
-        with open('At0EFWTR6D-featured.html', 'r') as f:
+        with open('test/resources/At0EFWTR6D-featured.html', 'r') as f:
             body = f.read()
         responses.add(responses.GET, url, body=body)
 
@@ -91,7 +91,7 @@ class GetSoupTest(unittest.TestCase):
 
     @responses.activate
     def test_it_returns_an_instance_of_beautiful_soup(self):
-        with open('index.html', 'r') as f:
+        with open('test/resources/index.html', 'r') as f:
             body = f.read()
         responses.add(responses.GET, app_directory.BASE_URL, body=body)
 
