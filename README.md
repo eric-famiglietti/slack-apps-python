@@ -1,5 +1,7 @@
 # slack-apps-python
 
+[![Build Status](https://travis-ci.org/eric-famiglietti/slack-apps-python.svg?branch=master)](https://travis-ci.org/eric-famiglietti/slack-apps-python)
+
 Python module for scraping the Slack App Directory.
 
 ## Requirements
