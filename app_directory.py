@@ -1,5 +1,5 @@
-import requests
 from bs4 import BeautifulSoup
+import requests
 
 
 BASE_URL = 'https://slack.com/apps/'
