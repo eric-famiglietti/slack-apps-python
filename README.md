@@ -103,6 +103,7 @@ Returns a dictionary containing information for a single application.
         ...
     ],
     'short_description': 'Controllable must-read lists for your team in Slack 📕📗📘',
+    'slack_id': 'A15KDN02Y',
     'slug': 'A15KDN02Y-must-read',
     'url': 'https://slack.com/apps/A15KDN02Y-must-read'
 }
