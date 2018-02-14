@@ -9,14 +9,26 @@ Python module for scraping the Slack App Directory.
 - [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/)
 - [Requests](http://docs.python-requests.org/en/master/)
 
+## Installation
+
+You can install the package using [pip](https://pypi.python.org/pypi):
+
+```
+pip install slack-apps-python
+```
+
 ## Usage
 
 ### Summary
 
-- `get_categories()`
-- `get_category(slug)`
-- `get_applications(slug, page)`
-- `get_application(slug)`
+```py
+import app_directory
+
+app_directory.get_categories()
+app_directory.get_category(slug)
+app_directory.get_applications(slug, page)
+app_directory.get_application(slug)
+```
 
 ### Methods
 
@@ -25,6 +37,7 @@ Python module for scraping the Slack App Directory.
 Returns a list of dictionaries representing the categories in the Slack App Directory.
 
 ```py
+>>> from app_directory import get_categories
 >>> categories = get_categories()
 >>> print(categories)
 [
@@ -43,6 +56,7 @@ Returns a list of dictionaries representing the categories in the Slack App Dire
 Returns a dictionary containing information for a single category. The category may have additional data such as a description.
 
 ```py
+>>> from app_directory import get_category
 >>> category = get_category('At0MQP5BEF-bots')
 >>> print(category)
 {
@@ -59,6 +73,7 @@ Returns a dictionary containing information for a single category. The category 
 Returns a list of dictionaries representing a single page of applications in a category.
 
 ```py
+>>> from app_directory import get_applications
 >>> applications = get_applications('At0EFWTR6D-featured', 1)
 >>> print(applications)
 [
@@ -81,6 +96,7 @@ Returns a list of dictionaries representing a single page of applications in a c
 Returns a dictionary containing information for a single application.
 
 ```py
+>>> from app_directory import get_application
 >>> application = get_application('A15KDN02Y-must-read')
 >>> print(application)
 {
@@ -111,4 +127,4 @@ Returns a dictionary containing information for a single application.
 
 ## Testing
 
-You can run the included unit tests using `python -m unittest`.
+You can run the included unit tests with `python -m unittest`.
